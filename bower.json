@@ -1,0 +1,11 @@
+{
+  "name": "simon",
+  "description": "FreeCodeCamp Simon Game",
+  "version": "1.0.0",
+  "homepage": "https://www.freecodecamp.com/ouyi",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "vue": "^1.0.26"
+  }
+}
