@@ -6,28 +6,50 @@
 </head>
 <body>
 
-    <div id="main">
-    
-        <!-- The navigation menu will get the value of the "active" variable as a class. -->
-    
-        <!-- To stops the page from jumping when a link is clicked 
-        we use the "prevent" modifier (short for preventDefault). -->
+    <div class="centered" id="main">
+        <div id="upper-half"> 
+            <div class="quadrant" id="top-l"></div>
+            <div class="quadrant" id="top-r"></div> 
+        </div> 
+        <div id="lower-half"> 
+            <div class="quadrant" id="bot-l"></div>
+            <div class="quadrant" id="bot-r"></div> 
+        </div> 
+    </div>
 
-        <nav v-bind:class="active" v-on:click.prevent>
-
-            <!-- When a link in the menu is clicked, we call the makeActive method, 
-            defined in the JavaScript Vue instance. It will change the value of "active". -->
-
-            <a href="#" class="home" v-on:click="makeActive('home')">Home</a>
-            <a href="#" class="projects" v-on:click="makeActive('projects')">Projects</a>
-            <a href="#" class="services" v-on:click="makeActive('services')">Services</a>
-            <a href="#" class="contact" v-on:click="makeActive('contact')">Contact</a>
-        </nav>
-
-         <!-- The mustache expression will be replaced with the value of "active".
-              It will automatically update to reflect any changes. -->
-
-        <p>You chose <b>{{active}}</b></p>
+    <div class="centered" id="panel">
+        <div id="trademark"> 
+            Simon<span class="superscript">&reg;</span>
+        </div> 
+        <div id="middle-row"> 
+            <div class="column" id="count-column"> 
+                <div id="led"> 
+                </div> 
+                <div class="label">
+                    COUNT
+                </div>
+            </div>
+            <div class="column" id="start-column"> 
+                <div class="mode-led"> 
+                </div> 
+                <div class="round-button" id="start-button"> 
+                </div> 
+                <div class="label">
+                    START
+                </div>
+            </div> 
+            <div class="column" id="strict-column"> 
+                <div class="mode-led"> 
+                </div> 
+                <div class="round-button" id="strict-button"> 
+                </div> 
+                <div class="label">
+                    STRICT
+                </div>
+            </div> 
+        </div> 
+        <div> 
+        </div> 
     </div>
 
     <script type="text/javascript" src="bower_components/vue/dist/vue.js"></script>
