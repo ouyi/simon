@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,9 +5,10 @@
 </head>
 <body>
 
-    <div class="centered" id="main">
+    <div id="main">
+    <div class="centered" id="round-area">
         <div id="upper-half"> 
-            <div class="quadrant" id="top-l"></div>
+            <div class="quadrant" v-bind:class="{ 'lightened': lightened }" v-on:mouseup="darken" v-on:mousedown="lighten" id="top-l"></div>
             <div class="quadrant" id="top-r"></div> 
         </div> 
         <div id="lower-half"> 
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="column" id="start-column"> 
-                <div class="mode-led"> 
+                <div class="round-led"> 
                 </div> 
                 <div class="round-button" id="start-button"> 
                 </div> 
@@ -39,7 +39,7 @@
                 </div>
             </div> 
             <div class="column" id="strict-column"> 
-                <div class="mode-led"> 
+                <div class="round-led" id="mode-led"> 
                 </div> 
                 <div class="round-button" id="strict-button"> 
                 </div> 
@@ -48,8 +48,15 @@
                 </div>
             </div> 
         </div> 
-        <div> 
+        <div id="bottom-row"> 
+            <span class="switch-label">OFF&nbsp;</span>
+            <div id="switch-slot"> 
+                <div id="switch-button">
+                </div>
+            </div> 
+            <span class="switch-label">&nbsp;ON</span>
         </div> 
+    </div>
     </div>
 
     <script type="text/javascript" src="bower_components/vue/dist/vue.js"></script>

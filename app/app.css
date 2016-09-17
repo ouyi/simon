@@ -9,7 +9,7 @@
     left: 50%;
     transform: translate(-50%,-50%);
 }
-#main {
+#round-area {
     width: 500px;
     height: 500px;
     border-radius: 50%;
@@ -22,6 +22,10 @@
     height: 230px;
     display: inline-block;
     border: 10px solid;
+    opacity: 0.7;
+}
+.lightened {
+    opacity: 1.0;
 }
 #top-l {
     border-top-left-radius: 100%;
@@ -44,11 +48,10 @@
     height: 240px;
     border-radius: 50%;
     border: 20px solid;
-    background-color: orange;
+    background-color: white;
     text-align: center;
 }
 #middle-row {
-    font-size: 0;
 }
 #trademark {
     font-size: 50px;
@@ -66,10 +69,9 @@
     bottom: 0;
 }
 .column {
-    height: 70px;
+    height: 65px;
     width : 60px;
     text-align: center;
-    border: 1px solid;
     display: inline-block;
     position: absolute;
 }
@@ -80,26 +82,60 @@
     width: 60px;
     height: 40px;
     background-color: black;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 #start-column {
     transform: translateX(-50%);
 }
 .round-button {
     margin: auto;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
-    background-color: pink;
+    background-color: red;
+    transform: translateY(-10%);
+    border: 5px solid black;
+}
+#strict-button {
+    background-color: yellow;
 }
 #strict-column {
     transform: translateX(70%);
 }
-.mode-led {
+.round-led {
     margin: auto;
     width: 10px;
     height: 10px;
     border-radius: 50%;
+    background-color: white;
+    transform: translateY(-50%);
+}
+#mode-led {
     background-color: black;
-    transform: translateY(-20%);
+}
+#bottom-row {
+    display:flex;
+    align-items:center;
+    bottom: 10%;
+    transform: translateX(65%);
+    position: absolute;
+    height: 20px;
+}
+#switch-slot {
+    width: 36px;
+    height: 18px;
+    background-color: black;
+    display: inline-block;
+}
+#switch-button {
+    width: 15px;
+    height: 15px;
+    background-color: blue;
+    border: 1.5px solid black;
+    border-radius: 2px
+    display: inline-block;
+    transform: translateX(18px);
+    position: absolute;
+}
+.switch-label {
 }
