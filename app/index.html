@@ -8,12 +8,12 @@
     <div id="main">
     <div class="centered" id="round-area">
         <div id="upper-half"> 
-            <div class="quadrant" v-bind:class="{ 'lightened': lightened }" v-on:mouseup="darken" v-on:mousedown="lighten" id="top-l"></div>
-            <div class="quadrant" id="top-r"></div> 
+            <quad sound-url="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" id="top-l"></quad>
+            <quad sound-url="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3" id="top-r"></quad>
         </div> 
         <div id="lower-half"> 
-            <div class="quadrant" id="bot-l"></div>
-            <div class="quadrant" id="bot-r"></div> 
+            <quad sound-url="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3" id="bot-l"></quad>
+            <quad sound-url="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3" id="bot-r"></quad>
         </div> 
     </div>
 
@@ -60,6 +60,7 @@
     </div>
 
     <script type="text/javascript" src="bower_components/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="bower_components/vue-resource/dist/vue-resource.js"></script>
     <script type="text/javascript" src="app.js"></script>
 </body>
 </html>
