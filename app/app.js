@@ -22,6 +22,12 @@ function genSeq(len, min, max) {
     return seq;
 }
 
+function errorSound() {
+    var p = document.createElement('audio');
+    p.src = "http://www.soundjay.com/button/button-4.wav";
+    p.play();
+}
+
 var quad = Vue.extend({
     template: '<div class="quadrant" v-bind:class="{ \'lightened\': lightened }" v-on:click="play" ></div>',
     props: ['qid', 'soundUrl'],
@@ -50,10 +56,15 @@ var quad = Vue.extend({
                 } else {
                     console.log("Error!");
                     var parent = this.$parent;
+                    parent.hasError = true;
                     parent.playedSeq = [];
                     parent.showedSeq = [];
                     parent.countDisplay = '!!';
                     setTimeout(function() {
+                        errorSound();
+                    }, 300);
+                    setTimeout(function() {
+                        parent.hasError = false;
                         parent.$options.methods.showSeq.apply(parent);
                     }, 2000);
                 }
@@ -78,6 +89,7 @@ var main = new Vue({
         'isOn': false,
         'count': 0,
         'countDisplay': '--',
+        'hasError': false,
         'showedSeq': [], 
         'playedSeq': [],
         'generatedSeq': []
@@ -125,6 +137,7 @@ var main = new Vue({
                 this.showedSeq = [];
                 this.playedSeq = [];
                 this.generatedSeq = [];
+                this.hasError = false;
             }
             this.isOn = !this.isOn;
         }

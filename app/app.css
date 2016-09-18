@@ -3,6 +3,14 @@
     padding:0;
     border: 0px;
 }
+
+@keyframes blink { 
+   50% { color: rgb(39, 12, 12); } 
+}
+.alarm { /*or other element you want*/
+    animation: blink .5s step-end infinite alternate;
+}
+
 body {
     background-image: url("https://static.pexels.com/photos/139306/pexels-photo-139306-large.jpeg"), url("https://static.pexels.com/photos/139325/pexels-photo-139325.jpeg");
     background-color: rgb(204, 136, 0);
