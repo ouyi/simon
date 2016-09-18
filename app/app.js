@@ -26,26 +26,42 @@ var main = new Vue({
     el: '#main',
     data: {
         'isStrict': false,
-        'isOn': false
+        'isOn': false,
+        'count': 0,
+        'showedSeq': [], 
+        'playedSeq': []
     },
     components: {
         'quad': quad
     },
     methods: {
         startGame: function() {
-            for (var i=0; i < this.$children.length; i++) {
-                (function(ind, child) {
-                    setTimeout(function(){
-                        child.lighten();
-                    }, 1000 * ind);
-                })(i, this.$children[i]);
+            function showSeq(seq, quad) {
+                for (var i = 0; i < seq.length; i++) {
+                    (function(ind, child) {
+                        setTimeout(function(){
+                            child.lighten();
+                        }, 1000 * ind);
+                    })(i, quad[seq[i]]);
+                }
+            }
+            function genSeq(len, min, max) {
+                var seq = [];
+                for (var i = 0; i < len; i++) {
+                    seq.push(Math.floor(Math.random() * max));
+                }
+                return seq;
+            }
+            if (this.isOn) {
+                this.count ++;
+                this.showedSeq = genSeq(this.count, 0, this.$children.length);
+                showSeq(this.showedSeq, this.$children);
             }
         },
         toggleStrict: function() {
             this.isStrict = !this.isStrict;
         },
         toggleOn: function() {
-            console.log(this.isOn);
             if (this.isStrict) {
                 this.toggleStrict();
             }
