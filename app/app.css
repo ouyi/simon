@@ -3,6 +3,10 @@
     padding:0;
     border: 0px;
 }
+body {
+    background-image: url("https://static.pexels.com/photos/139306/pexels-photo-139306-large.jpeg"), url("https://static.pexels.com/photos/139325/pexels-photo-139325.jpeg");
+    background-color: rgb(204, 136, 0);
+}
 .centered {
     position: absolute;
     top: 50%;
@@ -13,15 +17,16 @@
     width: 500px;
     height: 500px;
     border-radius: 50%;
-    border: 10px solid;
-    background-color: black;
+    border: 10px solid rgb(26, 26, 26);
+    background-color: rgb(26, 26, 26);
     font-size: 0;
+    box-shadow: 0 0 5px 2px rgba(0,0,0,0.5);
 }
 .quadrant {
     width: 230px;
     height: 230px;
     display: inline-block;
-    border: 10px solid;
+    border: 10px solid rgb(26, 26, 26);
     opacity: 0.7;
 }
 .lightened {
@@ -44,17 +49,19 @@
     background-color: blue;
 }
 #panel {
+    font-family: 'Days One', sans-serif;
     width: 240px;
     height: 240px;
     border-radius: 50%;
-    border: 20px solid;
-    background-color: white;
+    border: 20px solid rgb(26, 26, 26);
+    background-color: rgb(230, 230, 230);
     text-align: center;
 }
 #middle-row {
+    font-size: 80%;
 }
 #trademark {
-    font-size: 50px;
+    font-size: 130%;
     margin: 20px;
 }
 .superscript {
@@ -62,7 +69,6 @@
     vertical-align: super;
 }
 .label {
-    font-size: 16px;
     text-align: center;
     position: absolute;
     width: 100%;
@@ -79,10 +85,15 @@
     transform: translateX(-170%);
 }
 #led {
-    width: 60px;
-    height: 40px;
-    background-color: black;
+    font-family: 'VT323', monospace;
+    font-size: 220%;
+    color: rgb(153, 0, 0);
+    width: 50px;
+    height: 30px;
+    background-color: rgb(39, 12, 12);
     border-radius: 10px;
+    border: 5px solid rgb(26,26,26);
+    box-shadow: 0 0 0.5px 0.5px rgba(216, 216, 216, 0.8) inset;
 }
 #start-column {
     transform: translateX(-50%);
@@ -93,8 +104,9 @@
     height: 25px;
     border-radius: 50%;
     background-color: red;
-    transform: translateY(-10%);
-    border: 5px solid black;
+    transform: translateY(-15%);
+    border: 5px solid rgb(26, 26, 26);
+    box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(20,20,20,0.8);
 }
 #strict-button {
     background-color: yellow;
@@ -107,34 +119,35 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: white;
-    transform: translateY(-50%);
+    transform: translateY(-80%);
+    background-color: rgb(230, 230, 230);
 }
 #mode-led {
-    background-color: black;
+    background-color: rgb(26, 26, 26);
 }
 #bottom-row {
+    font-size: 80%;
     display:flex;
     align-items:center;
     bottom: 10%;
-    transform: translateX(65%);
+    transform: translateX(75%);
     position: absolute;
     height: 20px;
 }
 #switch-slot {
     width: 36px;
     height: 18px;
-    background-color: black;
+    background-color: rgb(26, 26, 26);
     display: inline-block;
+    box-shadow: 0 0px 1px 1px rgba(216, 216, 216, 0.8) inset;
 }
 #switch-button {
     width: 15px;
-    height: 15px;
+    height: 14px;
     background-color: blue;
-    border: 1.5px solid black;
     border-radius: 2px
     display: inline-block;
-    transform: translateX(18px);
+    transform: translate(18px, 2px);
     position: absolute;
 }
 .switch-label {
