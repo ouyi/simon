@@ -129,7 +129,7 @@ var main = new Vue({
                 this.isStrict = !this.isStrict;
             }
         },
-        toggleOn: function() {
+        reset: function() {
             if (this.isOn) {
                 this.isStrict = false;
                 this.count = 0;
@@ -139,6 +139,16 @@ var main = new Vue({
                 this.generatedSeq = [];
                 this.hasError = false;
             }
+        },
+        start: function() {
+            this.reset();
+            var that = this;
+            setTimeout(function() {
+                that.nextSeq();
+            }, 1000);
+        },
+        toggleOn: function() {
+            this.reset();
             this.isOn = !this.isOn;
         }
     }
