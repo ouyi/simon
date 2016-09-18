@@ -34,8 +34,7 @@
             <div class="column" id="start-column"> 
                 <div class="round-led"> 
                 </div> 
-                <div class="round-button" id="start-button"> 
-                </div> 
+                <div class="round-button" v-on:click="startGame" id="start-button"></div>
                 <div class="label">
                     START
                 </div>
@@ -43,7 +42,7 @@
             <div class="column" id="strict-column"> 
                 <div class="round-led round-led-off" v-bind:class="{ 'round-led-on': isStrict }" id="mode-led"> 
                 </div> 
-                <div class="round-button" v-on:click="stricten" id="strict-button"> 
+                <div class="round-button" v-on:click="toggleStrict" id="strict-button"> 
                 </div> 
                 <div class="label">
                     STRICT

@@ -14,6 +14,7 @@ var quad = Vue.extend({
         lighten: function() {
             this.lightened = true
             this.player.play();
+            this.player.onended = this.darken;
         },
         darken: function() {
             this.lightened = false
@@ -21,21 +22,27 @@ var quad = Vue.extend({
     }
 });
 
-var strictColumn = new Vue({
-    el: '#strict-column',
+var main = new Vue({
+    el: '#main',
     data: {
         'isStrict': false
     },
-    methods: {
-        stricten: function() {
-            this.isStrict = true;
-        }
-    }
-});
-
-var main = new Vue({
-    el: '#main',
     components: {
         'quad': quad
+    },
+    methods: {
+        startGame: function() {
+            for (var i=0; i < this.$children.length; i++) {
+                (function(ind, child) {
+                    setTimeout(function(){
+                        console.log(ind);
+                        child.lighten();
+                    }, 1000 * ind);
+                })(i, this.$children[i]);
+            }
+        },
+        toggleStrict: function() {
+            this.isStrict = !this.isStrict;
+        }
     }
 });
