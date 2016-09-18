@@ -1,4 +1,11 @@
 
+// n: number, z: 0
+function pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
 function isPrefix(a, b) {
     var p = b.slice(0, a.length);
     var isSame = (a.length == p.length) && a.every(function(element, index) {
@@ -28,24 +35,33 @@ var quad = Vue.extend({
     },
     methods: {
         play: function() {
-            this.lighten();
-            this.$parent.playedSeq.push(this.qid);
-            // check array contains
-            console.log(this.$parent.playedSeq);
-            if (isPrefix(this.$parent.playedSeq, this.$parent.showedSeq)) {
-                if (this.$parent.playedSeq.length === this.$parent.showedSeq.length) {
+            if (this.$parent.isOn) {
+                this.lighten();
+                this.$parent.playedSeq.push(this.qid);
+                // check array contains
+                console.log(this.$parent.playedSeq);
+                if (isPrefix(this.$parent.playedSeq, this.$parent.showedSeq)) {
+                    if (this.$parent.playedSeq.length === this.$parent.showedSeq.length) {
+                        var parent = this.$parent;
+                        setTimeout(function() {
+                            parent.$options.methods.nextSeq.apply(parent);
+                        }, 2000);
+                    }
+                } else {
+                    console.log("Error!");
                     var parent = this.$parent;
+                    parent.playedSeq = [];
+                    parent.showedSeq = [];
+                    parent.countDisplay = '!!';
                     setTimeout(function() {
-                        parent.$options.methods.nextSeq.apply(parent);
+                        parent.$options.methods.showSeq.apply(parent);
                     }, 2000);
                 }
-            } else {
-                console.log("Error!");
-                this.this.$parent.playedSeq = [];
             }
         },
         lighten: function() {
             this.lightened = true
+            this.$parent.countDisplay = pad(this.$parent.count, 2);
             this.player.play();
             this.player.onended = this.darken;
         },
@@ -61,32 +77,38 @@ var main = new Vue({
         'isStrict': false,
         'isOn': false,
         'count': 0,
+        'countDisplay': '--',
         'showedSeq': [], 
-        'playedSeq': []
+        'playedSeq': [],
+        'generatedSeq': []
     },
     components: {
         'quad': quad
     },
     methods: {
-        nextSeq: function() {
-            function showSeq(seq, quad, showedSeq) {
-                console.log("showSeq");
-                for (var i = 0; i < seq.length; i++) {
-                    (function(ind, child) {
-                        setTimeout(function(){
-                            child.lighten();
-                            showedSeq.push(child.qid);
-                        }, 1000 * ind);
-                    })(i, quad[seq[i]]);
-                }
+        showSeq: function() {
+            console.log("showSeq");
+            var seq = this.generatedSeq;
+            var quad = this.$children;
+            var showedSeq = this.showedSeq;
+            for (var i = 0; i < seq.length; i++) {
+                (function(ind, child) {
+                    setTimeout(function(){
+                        child.lighten();
+                        showedSeq.push(child.qid);
+                    }, 1000 * ind);
+                })(i, quad[seq[i]]);
             }
+        },
+        nextSeq: function() {
             console.log("nextSeq");
             if (this.isOn) {
                 this.count ++;
+                this.countDisplay = pad(this.count, 2);
                 this.showedSeq = [];
                 this.playedSeq = [];
-                var seq = genSeq(this.count, 0, this.$children.length);
-                showSeq(seq, this.$children, this.showedSeq);
+                this.generatedSeq = genSeq(this.count, 0, this.$children.length);
+                this.showSeq();
                 console.log(this.showedSeq);
             }
         },
@@ -99,8 +121,10 @@ var main = new Vue({
             if (this.isOn) {
                 this.isStrict = false;
                 this.count = 0;
+                this.countDisplay = '--';
                 this.showedSeq = [];
                 this.playedSeq = [];
+                this.generatedSeq = [];
             }
             this.isOn = !this.isOn;
         }
