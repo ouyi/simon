@@ -24,7 +24,7 @@
         </div> 
         <div id="middle-row"> 
             <div class="column" id="count-column"> 
-                <div v-bind:class="{ 'alarm': hasError }" id="led"> 
+                <div v-bind:class="{ 'alarm': blink }" id="led"> 
                     <span v-show="isOn">{{countDisplay}}</span>
                 </div> 
                 <div class="label">

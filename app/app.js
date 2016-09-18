@@ -1,4 +1,9 @@
 
+var errorSound = "http://www.soundjay.com/button/sounds/button-10.mp3";
+var startSound = "http://www.soundjay.com/button/sounds/button-5.mp3";
+var victoryCount = 3;
+var victorySeq = [0, 1, 2, 3, 0, 1, 2, 3, 0, 0, 0, 3];
+
 // n: number, z: 0
 function pad(n, width, z) {
     z = z || '0';
@@ -22,9 +27,9 @@ function genSeq(len, min, max) {
     return seq;
 }
 
-function errorSound() {
+function playSound(url) {
     var p = document.createElement('audio');
-    p.src = "http://www.soundjay.com/button/button-4.wav";
+    p.src = url;
     p.play();
 }
 
@@ -49,23 +54,39 @@ var quad = Vue.extend({
                 if (isPrefix(this.$parent.playedSeq, this.$parent.showedSeq)) {
                     if (this.$parent.playedSeq.length === this.$parent.showedSeq.length) {
                         var parent = this.$parent;
-                        setTimeout(function() {
-                            parent.$options.methods.nextSeq.apply(parent);
-                        }, 2000);
+                        if (parent.count === victoryCount) {
+                            parent.generatedSeq = victorySeq;
+                            parent.blink = true;
+                            parent.latency = 500;
+                            setTimeout(function() {
+                                parent.$options.methods.showSeq.apply(parent);
+                            }, 500);
+                            setTimeout(function() {
+                                parent.$options.methods.start.apply(parent);
+                            }, 8000);
+                        } else {
+                            setTimeout(function() {
+                                parent.$options.methods.nextSeq.apply(parent);
+                            }, 2000);
+                        }
                     }
                 } else {
                     console.log("Error!");
                     var parent = this.$parent;
-                    parent.hasError = true;
+                    parent.blink = true;
                     parent.playedSeq = [];
                     parent.showedSeq = [];
                     parent.countDisplay = '!!';
                     setTimeout(function() {
-                        errorSound();
+                        playSound(errorSound);
                     }, 300);
                     setTimeout(function() {
-                        parent.hasError = false;
-                        parent.$options.methods.showSeq.apply(parent);
+                        parent.blink = false;
+                        if (parent.isStrict) {
+                            parent.$options.methods.start.apply(parent);
+                        } else {
+                            parent.$options.methods.showSeq.apply(parent);
+                        }
                     }, 2000);
                 }
             }
@@ -88,8 +109,9 @@ var main = new Vue({
         'isStrict': false,
         'isOn': false,
         'count': 0,
+        'latency': 1000,
         'countDisplay': '--',
-        'hasError': false,
+        'blink': false,
         'showedSeq': [], 
         'playedSeq': [],
         'generatedSeq': []
@@ -103,12 +125,13 @@ var main = new Vue({
             var seq = this.generatedSeq;
             var quad = this.$children;
             var showedSeq = this.showedSeq;
+            var latency = this.latency;
             for (var i = 0; i < seq.length; i++) {
                 (function(ind, child) {
                     setTimeout(function(){
                         child.lighten();
                         showedSeq.push(child.qid);
-                    }, 1000 * ind);
+                    }, latency * ind);
                 })(i, quad[seq[i]]);
             }
         },
@@ -131,24 +154,26 @@ var main = new Vue({
         },
         reset: function() {
             if (this.isOn) {
-                this.isStrict = false;
                 this.count = 0;
                 this.countDisplay = '--';
                 this.showedSeq = [];
                 this.playedSeq = [];
                 this.generatedSeq = [];
-                this.hasError = false;
+                this.blink = false;
+                this.latency = 1000;
             }
         },
         start: function() {
             this.reset();
+            playSound(startSound);
             var that = this;
             setTimeout(function() {
                 that.nextSeq();
-            }, 1000);
+            }, 2000);
         },
         toggleOn: function() {
             this.reset();
+            this.isStrict = false;
             this.isOn = !this.isOn;
         }
     }
