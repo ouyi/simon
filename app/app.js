@@ -1,4 +1,20 @@
 
+function isPrefix(a, b) {
+    var p = b.slice(0, a.length);
+    var isSame = (a.length == p.length) && a.every(function(element, index) {
+        return element === p[index]; 
+    });
+    return isSame;
+}
+
+function genSeq(len, min, max) {
+    var seq = [];
+    for (var i = 0; i < len; i++) {
+        seq.push(Math.floor(Math.random() * max));
+    }
+    return seq;
+}
+
 var quad = Vue.extend({
     template: '<div class="quadrant" v-bind:class="{ \'lightened\': lightened }" v-on:click="play" ></div>',
     props: ['qid', 'soundUrl'],
@@ -16,6 +32,17 @@ var quad = Vue.extend({
             this.$parent.playedSeq.push(this.qid);
             // check array contains
             console.log(this.$parent.playedSeq);
+            if (isPrefix(this.$parent.playedSeq, this.$parent.showedSeq)) {
+                if (this.$parent.playedSeq.length === this.$parent.showedSeq.length) {
+                    var parent = this.$parent;
+                    setTimeout(function() {
+                        parent.$options.methods.nextSeq.apply(parent);
+                    }, 2000);
+                }
+            } else {
+                console.log("Error!");
+                this.this.$parent.playedSeq = [];
+            }
         },
         lighten: function() {
             this.lightened = true
@@ -41,8 +68,9 @@ var main = new Vue({
         'quad': quad
     },
     methods: {
-        startGame: function() {
+        nextSeq: function() {
             function showSeq(seq, quad, showedSeq) {
+                console.log("showSeq");
                 for (var i = 0; i < seq.length; i++) {
                     (function(ind, child) {
                         setTimeout(function(){
@@ -52,13 +80,7 @@ var main = new Vue({
                     })(i, quad[seq[i]]);
                 }
             }
-            function genSeq(len, min, max) {
-                var seq = [];
-                for (var i = 0; i < len; i++) {
-                    seq.push(Math.floor(Math.random() * max));
-                }
-                return seq;
-            }
+            console.log("nextSeq");
             if (this.isOn) {
                 this.count ++;
                 this.showedSeq = [];
@@ -69,13 +91,13 @@ var main = new Vue({
             }
         },
         toggleStrict: function() {
-            this.isStrict = !this.isStrict;
+            if (this.isOn) {
+                this.isStrict = !this.isStrict;
+            }
         },
         toggleOn: function() {
-            if (this.isStrict) {
-                this.toggleStrict();
-            }
             if (this.isOn) {
+                this.isStrict = false;
                 this.count = 0;
                 this.showedSeq = [];
                 this.playedSeq = [];
