@@ -122,8 +122,14 @@ body {
     transform: translateY(-80%);
     background-color: rgb(230, 230, 230);
 }
-#mode-led {
+.round-led-off {
     background-color: rgb(26, 26, 26);
+}
+.round-led-on {
+    background-color: red;
+    width: 6px;
+    height: 6px;
+    border: 2px solid rgb(26, 26, 26);
 }
 #bottom-row {
     font-size: 80%;

@@ -21,6 +21,18 @@ var quad = Vue.extend({
     }
 });
 
+var strictColumn = new Vue({
+    el: '#strict-column',
+    data: {
+        'isStrict': false
+    },
+    methods: {
+        stricten: function() {
+            this.isStrict = true;
+        }
+    }
+});
+
 var main = new Vue({
     el: '#main',
     components: {
