@@ -1,6 +1,6 @@
 
 var quad = Vue.extend({
-    template: '<div class="quadrant" v-bind:class="{ \'lightened\': lightened }" v-on:mouseup="darken" v-on:mousedown="lighten" ></div>',
+    template: '<div class="quadrant" v-bind:class="{ \'lightened\': lightened }" v-on:click="lighten" ></div>',
     props: ['soundUrl'],
     data: function() {
         var p = document.createElement('audio');
@@ -25,7 +25,8 @@ var quad = Vue.extend({
 var main = new Vue({
     el: '#main',
     data: {
-        'isStrict': false
+        'isStrict': false,
+        'isOn': false
     },
     components: {
         'quad': quad
@@ -35,7 +36,6 @@ var main = new Vue({
             for (var i=0; i < this.$children.length; i++) {
                 (function(ind, child) {
                     setTimeout(function(){
-                        console.log(ind);
                         child.lighten();
                     }, 1000 * ind);
                 })(i, this.$children[i]);
@@ -43,6 +43,13 @@ var main = new Vue({
         },
         toggleStrict: function() {
             this.isStrict = !this.isStrict;
+        },
+        toggleOn: function() {
+            console.log(this.isOn);
+            if (this.isStrict) {
+                this.toggleStrict();
+            }
+            this.isOn = !this.isOn;
         }
     }
 });

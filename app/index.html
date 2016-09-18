@@ -51,8 +51,8 @@
         </div> 
         <div id="bottom-row"> 
             <span class="switch-label">OFF&nbsp;</span>
-            <div id="switch-slot"> 
-                <div id="switch-button">
+            <div id="switch-slot" v-on:click="toggleOn"> 
+                <div class="switch-button" v-bind:class="{ 'switch-button-on': isOn }" >
                 </div>
             </div> 
             <span class="switch-label">&nbsp;ON</span>
