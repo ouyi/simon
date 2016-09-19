@@ -4,8 +4,8 @@
     border: 0px;
 }
 
-@keyframes blink { 
-   50% { color: rgb(39, 12, 12); } 
+@keyframes blink {
+   50% { color: rgb(39, 12, 12); }
 }
 .alarm { /*or other element you want*/
     animation: blink .5s step-end infinite alternate;
@@ -36,7 +36,7 @@ body {
     height: 230px;
     display: inline-block;
     border: 10px solid rgb(26, 26, 26);
-    opacity: 0.7;
+    opacity: 0.6;
 }
 .lightened {
     opacity: 1.0;

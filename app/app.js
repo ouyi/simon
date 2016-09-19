@@ -1,8 +1,8 @@
 
 var errorSound = "http://www.soundjay.com/button/sounds/button-10.mp3";
-var startSound = "http://www.soundjay.com/button/sounds/button-5.mp3";
+var startSound = "http://www.soundjay.com/misc/bell-ringing-05.mp3";
 var victoryCount = 3;
-var victorySeq = [0, 1, 2, 3, 0, 1, 2, 3, 0, 0, 0, 3];
+var victorySeq = [0, 1, 2, 3, 0, 1, 2, 3];
 
 // n: number, z: 0
 function pad(n, width, z) {
@@ -14,7 +14,7 @@ function pad(n, width, z) {
 function isPrefix(a, b) {
     var p = b.slice(0, a.length);
     var isSame = (a.length == p.length) && a.every(function(element, index) {
-        return element === p[index]; 
+        return element === p[index];
     });
     return isSame;
 }
@@ -109,10 +109,10 @@ var main = new Vue({
         'isStrict': false,
         'isOn': false,
         'count': 0,
-        'latency': 1000,
+        'latency': 500,
         'countDisplay': '--',
         'blink': false,
-        'showedSeq': [], 
+        'showedSeq': [],
         'playedSeq': [],
         'generatedSeq': []
     },
@@ -169,7 +169,7 @@ var main = new Vue({
             var that = this;
             setTimeout(function() {
                 that.nextSeq();
-            }, 2000);
+            }, 3000);
         },
         toggleOn: function() {
             this.reset();
