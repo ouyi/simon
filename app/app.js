@@ -27,10 +27,22 @@ function genSeq(len, min, max) {
     return seq;
 }
 
-function playSound(url) {
-    var p = document.createElement('audio');
-    p.src = url;
-    p.play();
+function sleepPromise(ms) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, ms);
+    });
+}
+
+function playSoundPromise(url) {
+    return new Promise(function(resolve, reject) { // return a promise
+        var audio = new Audio();                     // create audio wo/ src
+        audio.preload = "auto";                      // intend to play through
+        audio.autoplay = true;                       // autoplay when loaded
+        audio.onerror = reject;                      // on error, reject
+        audio.onended = resolve;                     // when done, resolve
+
+        audio.src = url
+    });
 }
 
 var quad = Vue.extend({
@@ -77,17 +89,17 @@ var quad = Vue.extend({
                     parent.playedSeq = [];
                     parent.showedSeq = [];
                     parent.countDisplay = '!!';
-                    setTimeout(function() {
-                        playSound(errorSound);
-                    }, 300);
-                    setTimeout(function() {
-                        parent.blink = false;
-                        if (parent.isStrict) {
-                            parent.$options.methods.start.apply(parent);
-                        } else {
-                            parent.$options.methods.showSeq.apply(parent);
-                        }
-                    }, 2000);
+                    sleepPromise(300)
+                        .then(playSoundPromise.bind(null, errorSound))
+                        .then(sleepPromise.bind(null, 2000))
+                        .then(function(){
+                            parent.blink = false;
+                            if (parent.isStrict) {
+                                parent.$options.methods.start.apply(parent);
+                            } else {
+                                parent.$options.methods.showSeq.apply(parent);
+                            }
+                        });
                 }
             }
         },
@@ -164,12 +176,10 @@ var main = new Vue({
             }
         },
         start: function() {
-            this.reset();
-            playSound(startSound);
-            var that = this;
-            setTimeout(function() {
-                that.nextSeq();
-            }, 3000);
+            if (this.isOn) {
+                this.reset();
+                playSoundPromise(startSound).then(this.nextSeq);
+            }
         },
         toggleOn: function() {
             this.reset();
