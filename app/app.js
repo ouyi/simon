@@ -75,7 +75,7 @@ var main = new Vue({
         'isStrict': false,
         'isOn': false,
         'count': 0,
-        'latency': 500,
+        'latency': 1000,
         'countDisplay': '--',
         'blink': false,
         'showedSeq': [],
@@ -92,13 +92,16 @@ var main = new Vue({
             var quad = this.$children;
             var showedSeq = this.showedSeq;
             var latency = this.latency;
+
+            var sequence = Promise.resolve();
             for (var i = 0; i < seq.length; i++) {
-                (function(ind, child) {
-                    setTimeout(function(){
-                        child.lighten();
-                        showedSeq.push(parseInt(child.qid));
-                    }, latency * ind);
-                })(i, quad[seq[i]]);
+                var child = quad[seq[i]];
+                var qid = parseInt(child.qid);
+                sequence = sequence.then(sleepPromise.bind(null, latency))
+                .then(child.lighten)
+                .then(function(showedSeq, qid) {
+                    showedSeq.push(qid);
+                }.bind(null, showedSeq, qid));
             }
         },
         nextSeq: function() {
