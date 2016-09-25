@@ -46,7 +46,7 @@ function playSoundPromise(url) {
 }
 
 var quad = Vue.extend({
-    template: '<div class="quadrant" v-bind:class="{ \'lightened\': lightened }" v-on:click="play" ></div>',
+    template: '#quad-template',
     props: ['qid', 'soundUrl'],
     data: function() {
         var p = document.createElement('audio');

@@ -5,7 +5,9 @@
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
-
+    <template id="quad-template">
+        <div class="quadrant" v-bind:class="{ 'lightened': lightened }" v-on:click="play" ></div>
+    </template>
     <div id="main">
     <div class="centered" id="round-area">
         <div id="upper-half"> 
