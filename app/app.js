@@ -49,11 +49,8 @@ var quad = Vue.extend({
     template: '#quad-template',
     props: ['qid', 'soundUrl'],
     data: function() {
-        var p = document.createElement('audio');
-        p.src = this.soundUrl;
         return {
             lightened: false,
-            player: p
         }
     },
     methods: {
@@ -64,8 +61,7 @@ var quad = Vue.extend({
         lighten: function() {
             this.lightened = true
             this.$parent.countDisplay = pad(this.$parent.count, 2);
-            this.player.play();
-            this.player.onended = this.darken;
+            playSoundPromise(this.soundUrl).then(this.darken);
         },
         darken: function() {
             this.lightened = false
