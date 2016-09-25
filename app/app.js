@@ -55,13 +55,13 @@ var quad = Vue.extend({
     },
     methods: {
         play: function() {
-            this.lighten();
+            this.lighten().then(this.darken);
             this.$dispatch('quad-played', this.qid);
         },
         lighten: function() {
             this.lightened = true
             this.$parent.countDisplay = pad(this.$parent.count, 2);
-            playSoundPromise(this.soundUrl).then(this.darken);
+            return playSoundPromise(this.soundUrl);
         },
         darken: function() {
             this.lightened = false
@@ -75,7 +75,7 @@ var main = new Vue({
         'isStrict': false,
         'isOn': false,
         'count': 0,
-        'latency': 1000,
+        'latency': 500,
         'countDisplay': '--',
         'blink': false,
         'showedSeq': [],
@@ -99,10 +99,12 @@ var main = new Vue({
                 var qid = parseInt(child.qid);
                 sequence = sequence.then(sleepPromise.bind(null, latency))
                 .then(child.lighten)
+                .then(child.darken)
                 .then(function(showedSeq, qid) {
                     showedSeq.push(qid);
                 }.bind(null, showedSeq, qid));
             }
+            return sequence;
         },
         nextSeq: function() {
             console.log("nextSeq");
@@ -112,8 +114,7 @@ var main = new Vue({
                 this.showedSeq = [];
                 this.playedSeq = [];
                 this.generatedSeq = genSeq(this.count, 0, this.$children.length);
-                this.showSeq();
-                console.log(this.showedSeq);
+                return this.showSeq();
             }
         },
         toggleStrict: function() {
@@ -129,7 +130,7 @@ var main = new Vue({
                 this.playedSeq = [];
                 this.generatedSeq = [];
                 this.blink = false;
-                this.latency = 1000;
+                this.latency = 500;
             }
         },
         start: function() {
@@ -154,17 +155,13 @@ var main = new Vue({
                         if (this.count === victoryCount) {
                             this.generatedSeq = victorySeq;
                             this.blink = true;
-                            this.latency = 500;
-                            setTimeout(function() {
-                               that.showSeq();
-                            }, 500);
-                            setTimeout(function() {
-                                that.start();
-                            }, 8000);
+                            this.latency = 0;
+                            sleepPromise(500)
+                                .then(that.showSeq)
+                                .then(sleepPromise.bind(null, 3000))
+                                .then(that.start);
                         } else {
-                            setTimeout(function() {
-                                that.nextSeq();
-                            }, 2000);
+                            sleepPromise(2000).then(that.nextSeq);
                         }
                     }
                 } else {
