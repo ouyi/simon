@@ -88,21 +88,15 @@ var main = new Vue({
     methods: {
         showSeq: function() {
             console.log("showSeq");
-            var seq = this.generatedSeq;
-            var quad = this.$children;
-            var showedSeq = this.showedSeq;
-            var latency = this.latency;
-
             var sequence = Promise.resolve();
-            for (var i = 0; i < seq.length; i++) {
-                var child = quad[seq[i]];
-                var qid = parseInt(child.qid);
-                sequence = sequence.then(sleepPromise.bind(null, latency))
+            for (var i = 0; i < this.generatedSeq.length; i++) {
+                var child = this.$children[this.generatedSeq[i]];
+                sequence = sequence.then(sleepPromise.bind(null, this.latency))
                 .then(child.lighten)
                 .then(child.darken)
                 .then(function(showedSeq, qid) {
                     showedSeq.push(qid);
-                }.bind(null, showedSeq, qid));
+                }.bind(null, this.showedSeq, parseInt(child.qid)));
             }
             return sequence;
         },
