@@ -145,17 +145,16 @@ var main = new Vue({
                 console.log(this.playedSeq);
                 if (isPrefix(this.playedSeq, this.showedSeq)) {
                     if (this.playedSeq.length === this.showedSeq.length) {
-                        var that = this;
                         if (this.count === victoryCount) {
                             this.generatedSeq = victorySeq;
                             this.blink = true;
                             this.latency = 0;
                             sleepPromise(500)
-                                .then(that.showSeq)
+                                .then(this.showSeq)
                                 .then(sleepPromise.bind(null, 3000))
-                                .then(that.start);
+                                .then(this.start);
                         } else {
-                            sleepPromise(2000).then(that.nextSeq);
+                            sleepPromise(2000).then(this.nextSeq);
                         }
                     }
                 } else {
