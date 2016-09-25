@@ -34,12 +34,12 @@ function sleepPromise(ms) {
 }
 
 function playSoundPromise(url) {
-    return new Promise(function(resolve, reject) { // return a promise
-        var audio = new Audio();                     // create audio wo/ src
-        audio.preload = "auto";                      // intend to play through
-        audio.autoplay = true;                       // autoplay when loaded
-        audio.onerror = reject;                      // on error, reject
-        audio.onended = resolve;                     // when done, resolve
+    return new Promise(function(resolve, reject) {
+        var audio = new Audio();
+        audio.preload = "auto";
+        audio.autoplay = true;
+        audio.onerror = reject;
+        audio.onended = resolve;
 
         audio.src = url
     });
