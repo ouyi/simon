@@ -11,12 +11,12 @@
     <div id="main">
     <div class="centered" id="round-area">
         <div id="upper-half"> 
-            <quad qid="4" sound-url="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" id="top-l"></quad>
-            <quad qid="3" sound-url="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3" id="top-r"></quad>
+            <quad v-on:quad-played="quadPlayed(4)" qid="4" sound-url="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" id="top-l"></quad>
+            <quad v-on:quad-played="quadPlayed(3)" qid="3" sound-url="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3" id="top-r"></quad>
         </div> 
         <div id="lower-half"> 
-            <quad qid="2" sound-url="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3" id="bot-l"></quad>
-            <quad qid="1" sound-url="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3" id="bot-r"></quad>
+            <quad v-on:quad-played="quadPlayed(2)" qid="2" sound-url="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3" id="bot-l"></quad>
+            <quad v-on:quad-played="quadPlayed(1)" qid="1" sound-url="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3" id="bot-r"></quad>
         </div> 
     </div>
 

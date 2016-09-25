@@ -58,50 +58,8 @@ var quad = Vue.extend({
     },
     methods: {
         play: function() {
-            if (this.$parent.isOn) {
-                this.lighten();
-                this.$parent.playedSeq.push(this.qid);
-                // check array contains
-                console.log(this.$parent.playedSeq);
-                if (isPrefix(this.$parent.playedSeq, this.$parent.showedSeq)) {
-                    if (this.$parent.playedSeq.length === this.$parent.showedSeq.length) {
-                        var parent = this.$parent;
-                        if (parent.count === victoryCount) {
-                            parent.generatedSeq = victorySeq;
-                            parent.blink = true;
-                            parent.latency = 500;
-                            setTimeout(function() {
-                                parent.$options.methods.showSeq.apply(parent);
-                            }, 500);
-                            setTimeout(function() {
-                                parent.$options.methods.start.apply(parent);
-                            }, 8000);
-                        } else {
-                            setTimeout(function() {
-                                parent.$options.methods.nextSeq.apply(parent);
-                            }, 2000);
-                        }
-                    }
-                } else {
-                    console.log("Error!");
-                    var parent = this.$parent;
-                    parent.blink = true;
-                    parent.playedSeq = [];
-                    parent.showedSeq = [];
-                    parent.countDisplay = '!!';
-                    sleepPromise(300)
-                        .then(playSoundPromise.bind(null, errorSound))
-                        .then(sleepPromise.bind(null, 2000))
-                        .then(function(){
-                            parent.blink = false;
-                            if (parent.isStrict) {
-                                parent.$options.methods.start.apply(parent);
-                            } else {
-                                parent.$options.methods.showSeq.apply(parent);
-                            }
-                        });
-                }
-            }
+            this.lighten();
+            this.$dispatch('quad-played', this.qid);
         },
         lighten: function() {
             this.lightened = true
@@ -142,7 +100,7 @@ var main = new Vue({
                 (function(ind, child) {
                     setTimeout(function(){
                         child.lighten();
-                        showedSeq.push(child.qid);
+                        showedSeq.push(parseInt(child.qid));
                     }, latency * ind);
                 })(i, quad[seq[i]]);
             }
@@ -185,6 +143,51 @@ var main = new Vue({
             this.reset();
             this.isStrict = false;
             this.isOn = !this.isOn;
+        },
+        quadPlayed: function(qid) {
+            if (this.isOn) {
+                this.playedSeq.push(qid);
+                // check array contains
+                console.log(this.playedSeq);
+                if (isPrefix(this.playedSeq, this.showedSeq)) {
+                    if (this.playedSeq.length === this.showedSeq.length) {
+                        var that = this;
+                        if (this.count === victoryCount) {
+                            this.generatedSeq = victorySeq;
+                            this.blink = true;
+                            this.latency = 500;
+                            setTimeout(function() {
+                               that.showSeq();
+                            }, 500);
+                            setTimeout(function() {
+                                that.start();
+                            }, 8000);
+                        } else {
+                            setTimeout(function() {
+                                that.nextSeq();
+                            }, 2000);
+                        }
+                    }
+                } else {
+                    console.log("Error!");
+                    var that = this;
+                    this.blink = true;
+                    this.playedSeq = [];
+                    this.showedSeq = [];
+                    this.countDisplay = '!!';
+                    sleepPromise(300)
+                        .then(playSoundPromise.bind(null, errorSound))
+                        .then(sleepPromise.bind(null, 2000))
+                        .then(function(){
+                            that.blink = false;
+                            if (that.isStrict) {
+                                that.start();
+                            } else {
+                                that.showSeq();
+                            }
+                        });
+                }
+            }
         }
     }
 });
