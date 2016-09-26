@@ -127,13 +127,7 @@ var main = new Vue({
             this.blink = false;
             this.latency = 500;
             this.quads = this.$children.sort(function(a, b){ 
-                if (parseInt(a.qid) < parseInt(b.qid)) {
-                    return -1;
-                }
-                if (parseInt(a.qid) > parseInt(b.qid)) {
-                    return 1;
-                }
-                return 0;
+                return parseInt(a.qid) - parseInt(b.qid);
             })
         },
         start: function() {
