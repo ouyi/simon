@@ -5,6 +5,10 @@ var startSound = "http://www.soundjay.com/misc/bell-ringing-05.mp3";
 var victoryCount = 3;
 var victorySeq = [3, 1, 0, 2, 3, 1, 0, 2];
 
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 // n: number, z: 0
 function pad(n, width, z) {
     z = z || '0';
@@ -46,6 +50,14 @@ function playSoundPromise(url) {
     });
 }
 
+Vue.filter('pad2chars', function(value){
+    if(isNumeric(value)) {
+        return pad(value, 2, '0');
+    } else {
+        return pad(value, 2, value[0]);
+    }
+});
+
 var quad = Vue.extend({
     template: '#quad-template',
     props: ['qid', 'soundUrl'],
@@ -64,7 +76,6 @@ var quad = Vue.extend({
         },
         lighten: function() {
             this.lightened = true
-            this.$parent.countDisplay = pad(this.$parent.count, 2);
             return playSoundPromise(this.soundUrl);
         },
         darken: function() {
@@ -88,7 +99,7 @@ var main = new Vue({
         'isOn': false,
         'count': 0,
         'latency': 500,
-        'countDisplay': '--',
+        'countDisplay': '-',
         'blink': false,
         'showedSeq': [],
         'playedSeq': [],
@@ -102,6 +113,7 @@ var main = new Vue({
         showSeq: function() {
             console.log("showSeq");
             this.$broadcast('disable-quad');
+            this.countDisplay = this.count + '';
             var sequence = Promise.resolve();
             for (var i = 0; i < this.generatedSeq.length; i++) {
                 var child = this.quads[this.generatedSeq[i]];
@@ -118,7 +130,7 @@ var main = new Vue({
             console.log("nextSeq");
             if (this.isOn) {
                 this.count ++;
-                this.countDisplay = pad(this.count, 2);
+                this.countDisplay = this.count + '';
                 this.showedSeq = [];
                 this.playedSeq = [];
                 this.generatedSeq = genSeq(this.count, 0, this.quads.length);
@@ -132,7 +144,7 @@ var main = new Vue({
         },
         reset: function() {
             this.count = 0;
-            this.countDisplay = '--';
+            this.countDisplay = '-';
             this.showedSeq = [];
             this.playedSeq = [];
             this.generatedSeq = [];
@@ -178,7 +190,7 @@ var main = new Vue({
                     this.blink = true;
                     this.playedSeq = [];
                     this.showedSeq = [];
-                    this.countDisplay = '!!';
+                    this.countDisplay = '!';
                     sleepPromise(300)
                         .then(playSoundPromise.bind(null, errorSound))
                         .then(sleepPromise.bind(null, 2000))
