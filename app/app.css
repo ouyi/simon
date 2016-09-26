@@ -161,9 +161,7 @@ body {
     height: 14px;
     background-color: blue;
     border-radius: 2px;
-    display: inline-block;
-    position: absolute;
-    transform: translateY(2px);
+    transform: translate(2px, 2px);
 }
 .switch-button-on {
     transform: translate(18px, 2px);
