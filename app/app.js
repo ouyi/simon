@@ -1,8 +1,9 @@
+'use strict';
 
 var errorSound = "http://www.soundjay.com/button/sounds/button-10.mp3";
 var startSound = "http://www.soundjay.com/misc/bell-ringing-05.mp3";
 var victoryCount = 3;
-var victorySeq = [0, 1, 2, 3, 0, 1, 2, 3];
+var victorySeq = [3, 1, 0, 2, 3, 1, 0, 2];
 
 // n: number, z: 0
 function pad(n, width, z) {
@@ -80,7 +81,8 @@ var main = new Vue({
         'blink': false,
         'showedSeq': [],
         'playedSeq': [],
-        'generatedSeq': []
+        'generatedSeq': [],
+        'quads': []
     },
     components: {
         'quad': quad
@@ -90,7 +92,7 @@ var main = new Vue({
             console.log("showSeq");
             var sequence = Promise.resolve();
             for (var i = 0; i < this.generatedSeq.length; i++) {
-                var child = this.$children[this.generatedSeq[i]];
+                var child = this.quads[this.generatedSeq[i]];
                 sequence = sequence.then(sleepPromise.bind(null, this.latency))
                 .then(child.lighten)
                 .then(child.darken)
@@ -107,7 +109,7 @@ var main = new Vue({
                 this.countDisplay = pad(this.count, 2);
                 this.showedSeq = [];
                 this.playedSeq = [];
-                this.generatedSeq = genSeq(this.count, 0, this.$children.length);
+                this.generatedSeq = genSeq(this.count, 0, this.quads.length);
                 return this.showSeq();
             }
         },
@@ -117,15 +119,22 @@ var main = new Vue({
             }
         },
         reset: function() {
-            if (this.isOn) {
-                this.count = 0;
-                this.countDisplay = '--';
-                this.showedSeq = [];
-                this.playedSeq = [];
-                this.generatedSeq = [];
-                this.blink = false;
-                this.latency = 500;
-            }
+            this.count = 0;
+            this.countDisplay = '--';
+            this.showedSeq = [];
+            this.playedSeq = [];
+            this.generatedSeq = [];
+            this.blink = false;
+            this.latency = 500;
+            this.quads = this.$children.sort(function(a, b){ 
+                if (parseInt(a.qid) < parseInt(b.qid)) {
+                    return -1;
+                }
+                if (parseInt(a.qid) > parseInt(b.qid)) {
+                    return 1;
+                }
+                return 0;
+            })
         },
         start: function() {
             if (this.isOn) {
