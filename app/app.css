@@ -160,7 +160,7 @@ body {
     width: 15px;
     height: 14px;
     background-color: blue;
-    border-radius: 2px
+    border-radius: 2px;
     display: inline-block;
     position: absolute;
     transform: translateY(2px);
