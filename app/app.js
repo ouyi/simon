@@ -52,12 +52,15 @@ var quad = Vue.extend({
     data: function() {
         return {
             lightened: false,
+            enabled: true,
         }
     },
     methods: {
         play: function() {
-            this.lighten().then(this.darken);
-            this.$dispatch('quad-played', this.qid);
+            if (this.enabled) {
+                this.lighten().then(this.darken);
+                this.$dispatch('quad-played', this.qid);
+            }
         },
         lighten: function() {
             this.lightened = true
@@ -66,6 +69,14 @@ var quad = Vue.extend({
         },
         darken: function() {
             this.lightened = false
+        }
+    },
+    events: {
+        'disable-quad': function() {
+            this.enabled = false;
+        },
+        'enable-quad': function() {
+            this.enabled = true;
         }
     }
 });
@@ -90,6 +101,7 @@ var main = new Vue({
     methods: {
         showSeq: function() {
             console.log("showSeq");
+            this.$broadcast('disable-quad');
             var sequence = Promise.resolve();
             for (var i = 0; i < this.generatedSeq.length; i++) {
                 var child = this.quads[this.generatedSeq[i]];
@@ -100,7 +112,7 @@ var main = new Vue({
                     showedSeq.push(qid);
                 }.bind(null, this.showedSeq, child.qid));
             }
-            return sequence;
+            return sequence.then(this.$broadcast.bind(this, 'enable-quad'));
         },
         nextSeq: function() {
             console.log("nextSeq");
