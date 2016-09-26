@@ -98,7 +98,7 @@ var main = new Vue({
                 .then(child.darken)
                 .then(function(showedSeq, qid) {
                     showedSeq.push(qid);
-                }.bind(null, this.showedSeq, parseInt(child.qid)));
+                }.bind(null, this.showedSeq, child.qid));
             }
             return sequence;
         },
@@ -127,7 +127,7 @@ var main = new Vue({
             this.blink = false;
             this.latency = 500;
             this.quads = this.$children.sort(function(a, b){ 
-                return parseInt(a.qid) - parseInt(b.qid);
+                return a.qid - b.qid;
             })
         },
         start: function() {
